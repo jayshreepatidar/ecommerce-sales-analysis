@@ -220,3 +220,110 @@ COUNT(order_id) AS total_orders
 FROM orders
 GROUP BY order_date
 ORDER BY order_date;
+
+
+-- 3. CUSTOMER & BUSINESS INSIGHTS
+
+-- Q27. Top 10 customers with highest number of orders
+SELECT
+c.customer_id,
+COUNT(o.order_id) AS total_orders
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+GROUP BY c.customer_id
+ORDER BY total_orders DESC
+LIMIT 10;
+
+
+-- Q28. Top 10 customers by total spending
+SELECT
+c.customer_id,
+SUM(oi.price) AS total_spent
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+JOIN order_items oi
+ON o.order_id = oi.order_id
+GROUP BY c.customer_id
+ORDER BY total_spent DESC
+LIMIT 10;
+
+
+-- Q29. Find Customers who placed only one order.
+SELECT
+customer_id,
+COUNT(order_id) AS total_orders
+FROM orders
+GROUP BY customer_id
+HAVING COUNT(order_id) = 1;
+
+
+-- Q30. Find Cities generating highest revenue
+SELECT
+c.customer_city,
+SUM(oi.price) AS total_revenue
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+JOIN order_items oi
+ON o.order_id = oi.order_id
+GROUP BY c.customer_city
+ORDER BY total_revenue DESC
+LIMIT 10;
+
+
+-- Q31. States generating highest revenue
+SELECT
+c.customer_state,
+SUM(oi.price) AS total_revenue
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+JOIN order_items oi
+ON o.order_id = oi.order_id
+GROUP BY c.customer_state
+ORDER BY total_revenue DESC;
+
+
+-- Q32. Monthly sales trend
+SELECT
+DATE_TRUNC('month', o.order_purchase_timestamp) AS month,
+SUM(oi.price) AS monthly_revenue
+FROM orders o
+JOIN order_items oi
+ON o.order_id = oi.order_id
+GROUP BY month
+ORDER BY month;
+
+
+-- Q33. Monthly order growth
+SELECT
+DATE_TRUNC('month', order_purchase_timestamp) AS month,
+COUNT(order_id) AS total_orders
+FROM orders
+GROUP BY month
+ORDER BY month;
+
+
+-- Q34. On average, how many days it takes for an order to be delivered after it is purchased.
+SELECT
+AVG(order_delivered_customer_date - order_purchase_timestamp) AS avg_delivery_time
+FROM orders
+WHERE order_delivered_customer_date IS NOT NULL;
+
+
+-- Q35. Orders delivered later than estimated date.
+SELECT
+COUNT(*) AS late_deliveries
+FROM orders
+WHERE order_delivered_customer_date > order_estimated_delivery_date;
+
+
+-- Q36. Find the distribution of payments by payment type.
+SELECT
+payment_type,
+COUNT(*) AS total_payments
+FROM order_payments
+GROUP BY payment_type
+ORDER BY total_payments DESC;
