@@ -327,3 +327,38 @@ COUNT(*) AS total_payments
 FROM order_payments
 GROUP BY payment_type
 ORDER BY total_payments DESC;
+
+
+-- 4. ADVANCED SQL (WINDOW FUNCTIONS)
+
+-- Q37. Rank products based on total revenue generated
+SELECT
+product_id,
+SUM(price) AS total_revenue,
+RANK() OVER (ORDER BY SUM(price) DESC) AS revenue_rank
+FROM order_items
+GROUP BY product_id;
+
+-- Q38. Rank customers based on total spending
+SELECT
+c.customer_id,
+SUM(oi.price) AS total_spent,
+RANK() OVER (ORDER BY SUM(oi.price) DESC) AS customer_rank
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+JOIN order_items oi
+ON o.order_id = oi.order_id
+GROUP BY c.customer_id;
+
+
+-- Q39. Calculate daily revenue and the cumulative running total of revenue over time.
+SELECT
+DATE(o.order_purchase_timestamp) AS order_date,
+SUM(oi.price) AS daily_revenue,
+SUM(SUM(oi.price)) OVER (ORDER BY DATE(o.order_purchase_timestamp)) AS running_total_revenue
+FROM orders o
+JOIN order_items oi
+ON o.order_id = oi.order_id
+GROUP BY order_date
+ORDER BY order_date;
