@@ -32,15 +32,33 @@ This project simulates real-world business analysis and demonstrates how data ca
 
 ---
 
-##  Dataset Description
+## Database Schema
 
-The dataset consists of multiple related tables:
+The database consists of five related tables that capture customer, order, product, and payment information. The schema is designed using a relational database structure with primary and foreign key relationships.
 
-* **customers** : Customer information
-* **orders** : Order details (date, status, etc.)
-* **order_items** : Product-level details (price, quantity)
-* **products** : Product details
-* **order_payments** : Payment types and values
+### Entity Relationship Diagram (ERD)
+
+![ER Diagram](images/er_diagram.png)
+
+### Relationships
+
+* One customer can place multiple orders.
+* Each order belongs to one customer.
+* One order can contain multiple order items.
+* Each order item is associated with a product.
+* One order can have one or more payment records.
+
+### Tables
+
+| Table          | Description                                 |
+| -------------- | ------------------------------------------- |
+| customers      | Customer information and location details   |
+| orders         | Order status and purchase timestamps        |
+| order_items    | Product-level details for each order        |
+| products       | Product attributes and category information |
+| order_payments | Payment method and payment value details    |
+
+
 
 ---
 
@@ -50,13 +68,6 @@ The dataset used in this project is the **Brazilian E-commerce Public Dataset (O
 
 ---
 
-##  Database Design
-
-* Created relational schema using PostgreSQL
-* Defined Primary Keys and Foreign Keys
-* Established relationships between tables
-
----
 
 ##  SQL Analysis
 
@@ -190,10 +201,11 @@ ecommerce-sales-analysis
 │   └── analysis_queries.sql
 │
 ├── dashboard
-│   └── ecommerce_dashboard.xlsx
+│   ├── ecommerce_dashboard.xls
 │
 ├── images
 │   ├── dashboard.png
+│   ├── er_diagram.png
 │   ├── revenue_by_category.png
 │   ├── payment_distribution.png
 │   ├── revenue_by_state.png
@@ -219,6 +231,8 @@ It showcases practical skills in SQL, data analysis, and visualization, which ar
 
 **Jayshree Patidar**
 
-**LinkedIn:** https://www.linkedin.com/in/jayshreepatidar
+**LinkedIn:** [Jayshree Patidar](https://www.linkedin.com/in/jayshreepatidar)
+
+**Email:** jayshreepatidar22@gmail.com
 
 ---
